@@ -1,7 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/style.css">
+</head>
 <body>
-<h1>Hello World</h1>
-<p>I'm hosted with GitHub Pages.</p>
+
+
+  <div class="keys">
+    <div data-key="65" class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83" class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68" class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70" class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71" class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72" class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74" class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75" class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76" class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/clap.wav"></audio>
+  <audio data-key="83" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/hihat.wav"></audio>
+  <audio data-key="68" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/kick.wav"></audio>
+  <audio data-key="70" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/openhat.wav"></audio>
+  <audio data-key="71" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/boom.wav"></audio>
+  <audio data-key="72" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/ride.wav"></audio>
+  <audio data-key="74" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/snare.wav"></audio>
+  <audio data-key="75" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/tom.wav"></audio>
+  <audio data-key="76" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/2877205/tink.wav"></audio>
+
+<script>
+
+// A drum kit I created on 2019.09.03, Day #1 of 30 days of code in the JavaScript30.com class. I learned how to setup code pen, add assets like sound and CSS, about keyboard events, playing audio, a couple methods including querySelector and querySelectorAll, how to edit CSS by using the classList property, and listening for a transitionEnd event.
+  
+  function playSound(e){
+    const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`); //you need to use a grave accent mark ` instead fo an apostrophe '. The querySelector() method returns the first element that matches a specified CSS selector(s) in the document
+    const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+    audio.currentTime = 0; //rewind to the start
+    if (!audio) return;//stop the funciton from running 
+    audio.play();
+    key.classList.add('playing');
+  }
+  
+  function removeTransition(e){
+    if (e.propertyName !== 'transform') return; //skip it if it's not a transform
+    this.classList.remove('playing'); // this is key from below
+  }
+  
+  const keys = document.querySelectorAll('.key'); //The querySelectorAll() method returns an array
+  keys.forEach(key => key.addEventListener('transitionend', removeTransition )); //the array will need to be cycled through to listen to each element
+  
+  window.addEventListener('keydown', playSound); //
+
+</script>
+
+
 </body>
 </html>
